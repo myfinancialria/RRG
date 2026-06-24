@@ -288,11 +288,22 @@ const chart=new Chart(document.getElementById('rrg'),{data:{datasets:[]},
       grid:{color:'#eef0f3'},ticks:{color:'#6b7280'}}}},
   plugins:[quadBands,quadLabels,headLabels]});
 
-function computeBounds(list){let m=0;list.forEach(s=>{tailAt(s.series,state.head,state.tail)
-  .forEach(p=>{m=Math.max(m,Math.abs(p.x-100),Math.abs(p.y-100));});});
-  const r=Math.max(0.8,m*1.18);
-  chart.options.scales.x.min=100-r;chart.options.scales.x.max=100+r;
-  chart.options.scales.y.min=100-r;chart.options.scales.y.max=100+r;}
+// Center both axes on 100 AND make 1 unit cover the SAME number of pixels on
+// each axis (true RRG geometry). Otherwise a wide/short — or tall/narrow — plot
+// distorts the cluster so points look stacked on one axis.
+function computeBounds(list){
+  let rx=0.8,ry=0.8;
+  list.forEach(s=>tailAt(s.series,state.head,state.tail)
+    .forEach(p=>{rx=Math.max(rx,Math.abs(p.x-100));ry=Math.max(ry,Math.abs(p.y-100));}));
+  rx*=1.18; ry*=1.18;
+  const a=chart.chartArea;
+  let W=(a?a.right-a.left:chart.canvas.clientWidth)||1;
+  let H=(a?a.bottom-a.top:chart.canvas.clientHeight)||1;
+  if(W<=0)W=1; if(H<=0)H=1;
+  const scale=Math.min(W/(2*rx),H/(2*ry));   // px per unit — tighter axis wins
+  const RX=W/(2*scale),RY=H/(2*scale);       // both ≥ their data radius
+  chart.options.scales.x.min=100-RX;chart.options.scales.x.max=100+RX;
+  chart.options.scales.y.min=100-RY;chart.options.scales.y.max=100+RY;}
 
 function render(){
   const list=chartList();
@@ -412,5 +423,7 @@ document.getElementById('foot').innerHTML=
   `centre of the chart = the market. Data end-of-session, generated ${DATA.generated}. `+
   `<b>For education and research only — not investment advice.</b>`;
 buildSidebar();setMax();render();
+requestAnimationFrame(render);                 // re-fit once real chart size is known
+window.addEventListener('resize',()=>render());// keep axes square on viewport change
 </script>
 </body></html>
