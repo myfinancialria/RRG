@@ -1,0 +1,727 @@
+{
+ "Bank": {
+  "group": "Financials",
+  "kind": "sector",
+  "members": [
+   "HDFCBANK",
+   "ICICIBANK",
+   "SBIN",
+   "KOTAKBANK",
+   "AXISBANK",
+   "INDUSINDBK",
+   "PNB",
+   "BANKBARODA",
+   "AUBANK",
+   "FEDERALBNK",
+   "IDFCFIRSTB",
+   "BANDHANBNK"
+  ]
+ },
+ "Private Bank": {
+  "group": "Financials",
+  "kind": "sector",
+  "members": [
+   "HDFCBANK",
+   "ICICIBANK",
+   "AXISBANK",
+   "KOTAKBANK",
+   "INDUSINDBK",
+   "YESBANK",
+   "IDFCFIRSTB",
+   "FEDERALBNK",
+   "BANDHANBNK",
+   "RBLBANK"
+  ]
+ },
+ "PSU Bank": {
+  "group": "Financials",
+  "kind": "sector",
+  "members": [
+   "SBIN",
+   "BANKBARODA",
+   "PNB",
+   "CANBK",
+   "UNIONBANK",
+   "INDIANB",
+   "BANKINDIA",
+   "MAHABANK",
+   "CENTRALBK",
+   "IOB",
+   "UCOBANK",
+   "PSB"
+  ]
+ },
+ "Financial Services": {
+  "group": "Financials",
+  "kind": "sector",
+  "members": [
+   "HDFCBANK",
+   "ICICIBANK",
+   "BAJFINANCE",
+   "BAJAJFINSV",
+   "KOTAKBANK",
+   "AXISBANK",
+   "SBIN",
+   "HDFCLIFE",
+   "SBILIFE",
+   "ICICIPRULI",
+   "ICICIGI",
+   "SHRIRAMFIN",
+   "CHOLAFIN",
+   "MUTHOOTFIN",
+   "PFC",
+   "RECLTD",
+   "SBICARD",
+   "HDFCAMC"
+  ]
+ },
+ "NBFC / Finance": {
+  "group": "Financials",
+  "kind": "sub",
+  "members": [
+   "BAJFINANCE",
+   "CHOLAFIN",
+   "SHRIRAMFIN",
+   "MUTHOOTFIN",
+   "MANAPPURAM",
+   "M&MFIN",
+   "SBICARD",
+   "ABCAPITAL",
+   "PFC",
+   "RECLTD",
+   "IREDA",
+   "LTF",
+   "BAJAJFINSV",
+   "POONAWALLA"
+  ]
+ },
+ "Insurance": {
+  "group": "Financials",
+  "kind": "sub",
+  "members": [
+   "HDFCLIFE",
+   "SBILIFE",
+   "ICICIPRULI",
+   "ICICIGI",
+   "LICI",
+   "STARHEALTH",
+   "NIVABUPA",
+   "GICRE",
+   "NIACL"
+  ]
+ },
+ "Capital Markets": {
+  "group": "Financials",
+  "kind": "sub",
+  "members": [
+   "HDFCAMC",
+   "NUVAMA",
+   "ANGELONE",
+   "MOTILALOFS",
+   "360ONE",
+   "BSE",
+   "MCX",
+   "CDSL",
+   "CAMS",
+   "KFINTECH",
+   "IEX"
+  ]
+ },
+ "Housing Finance": {
+  "group": "Financials",
+  "kind": "sub",
+  "members": [
+   "LICHSGFIN",
+   "PNBHOUSING",
+   "AAVAS",
+   "HOMEFIRST",
+   "APTUS",
+   "CANFINHOME",
+   "REPCOHOME",
+   "BAJAJHFL"
+  ]
+ },
+ "IT": {
+  "group": "Technology",
+  "kind": "sector",
+  "members": [
+   "TCS",
+   "INFY",
+   "HCLTECH",
+   "WIPRO",
+   "TECHM",
+   "LTIM",
+   "PERSISTENT",
+   "COFORGE",
+   "MPHASIS",
+   "LTTS"
+  ]
+ },
+ "New-age / Internet": {
+  "group": "Technology",
+  "kind": "sub",
+  "members": [
+   "ETERNAL",
+   "NYKAA",
+   "PAYTM",
+   "POLICYBZR",
+   "DELHIVERY",
+   "CARTRADE",
+   "NAUKRI",
+   "MAPMYINDIA",
+   "ZAGGLE"
+  ]
+ },
+ "Pharma": {
+  "group": "Healthcare",
+  "kind": "sector",
+  "members": [
+   "SUNPHARMA",
+   "CIPLA",
+   "DRREDDY",
+   "DIVISLAB",
+   "LUPIN",
+   "AUROPHARMA",
+   "TORNTPHARM",
+   "ZYDUSLIFE",
+   "ALKEM",
+   "BIOCON",
+   "GLENMARK",
+   "LAURUSLABS",
+   "MANKIND"
+  ]
+ },
+ "Healthcare": {
+  "group": "Healthcare",
+  "kind": "sector",
+  "members": [
+   "SUNPHARMA",
+   "CIPLA",
+   "DRREDDY",
+   "DIVISLAB",
+   "APOLLOHOSP",
+   "MAXHEALTH",
+   "FORTIS",
+   "LUPIN",
+   "AUROPHARMA",
+   "TORNTPHARM",
+   "ALKEM",
+   "ZYDUSLIFE",
+   "LALPATHLAB",
+   "METROPOLIS",
+   "SYNGENE"
+  ]
+ },
+ "Hospitals": {
+  "group": "Healthcare",
+  "kind": "sub",
+  "members": [
+   "APOLLOHOSP",
+   "MAXHEALTH",
+   "FORTIS",
+   "NH",
+   "MEDANTA",
+   "ASTERDM",
+   "KIMS",
+   "RAINBOW"
+  ]
+ },
+ "Diagnostics": {
+  "group": "Healthcare",
+  "kind": "sub",
+  "members": [
+   "LALPATHLAB",
+   "METROPOLIS",
+   "THYROCARE",
+   "VIJAYA",
+   "KRSNAA"
+  ]
+ },
+ "CDMO / API": {
+  "group": "Healthcare",
+  "kind": "sub",
+  "members": [
+   "LAURUSLABS",
+   "DIVISLAB",
+   "SYNGENE",
+   "GLAND",
+   "NEULANDLAB",
+   "AARTIPHARM",
+   "SUVENPHAR",
+   "CONCORDBIO"
+  ]
+ },
+ "Auto": {
+  "group": "Consumer & Auto",
+  "kind": "sector",
+  "members": [
+   "M&M",
+   "MARUTI",
+   "TATAMOTORS",
+   "BAJAJ-AUTO",
+   "EICHERMOT",
+   "HEROMOTOCO",
+   "TVSMOTOR",
+   "ASHOKLEY",
+   "BOSCHLTD",
+   "BHARATFORG",
+   "MOTHERSON",
+   "BALKRISIND",
+   "MRF",
+   "TIINDIA"
+  ]
+ },
+ "FMCG": {
+  "group": "Consumer & Auto",
+  "kind": "sector",
+  "members": [
+   "HINDUNILVR",
+   "ITC",
+   "NESTLEIND",
+   "VBL",
+   "BRITANNIA",
+   "TATACONSUM",
+   "GODREJCP",
+   "DABUR",
+   "MARICO",
+   "COLPAL",
+   "UBL",
+   "PGHH",
+   "EMAMILTD",
+   "RADICO",
+   "UNITDSPR"
+  ]
+ },
+ "Consumer Durables": {
+  "group": "Consumer & Auto",
+  "kind": "sector",
+  "members": [
+   "TITAN",
+   "HAVELLS",
+   "DIXON",
+   "VOLTAS",
+   "CROMPTON",
+   "BLUESTARCO",
+   "KAJARIACER",
+   "BATAINDIA",
+   "WHIRLPOOL",
+   "AMBER",
+   "CERA",
+   "VGUARD",
+   "KALYANKJIL"
+  ]
+ },
+ "Auto OEM": {
+  "group": "Consumer & Auto",
+  "kind": "sub",
+  "members": [
+   "MARUTI",
+   "M&M",
+   "TATAMOTORS",
+   "BAJAJ-AUTO",
+   "EICHERMOT",
+   "HEROMOTOCO",
+   "TVSMOTOR",
+   "ASHOKLEY"
+  ]
+ },
+ "Auto Ancillaries": {
+  "group": "Consumer & Auto",
+  "kind": "sub",
+  "members": [
+   "BOSCHLTD",
+   "MOTHERSON",
+   "BHARATFORG",
+   "BALKRISIND",
+   "MRF",
+   "SONACOMS",
+   "UNOMINDA",
+   "EXIDEIND",
+   "ENDURANCE",
+   "SCHAEFFLER",
+   "APOLLOTYRE",
+   "TIINDIA",
+   "SUNDRMFAST"
+  ]
+ },
+ "Retail": {
+  "group": "Consumer & Auto",
+  "kind": "sub",
+  "members": [
+   "TRENT",
+   "DMART",
+   "ABFRL",
+   "VMART",
+   "SHOPERSTOP",
+   "V2RETAIL",
+   "ARVINDFASN",
+   "ETERNAL"
+  ]
+ },
+ "Jewellery": {
+  "group": "Consumer & Auto",
+  "kind": "sub",
+  "members": [
+   "TITAN",
+   "KALYANKJIL",
+   "SENCO",
+   "PCJEWELLER",
+   "THANGAMAYL"
+  ]
+ },
+ "Beverages & Liquor": {
+  "group": "Consumer & Auto",
+  "kind": "sub",
+  "members": [
+   "UBL",
+   "UNITDSPR",
+   "RADICO",
+   "VBL",
+   "GLOBUSSPR",
+   "SDBL"
+  ]
+ },
+ "Infrastructure": {
+  "group": "Industrials",
+  "kind": "sector",
+  "members": [
+   "LT",
+   "BHARTIARTL",
+   "NTPC",
+   "POWERGRID",
+   "ULTRACEMCO",
+   "GRASIM",
+   "ADANIPORTS",
+   "DLF",
+   "SIEMENS",
+   "BEL",
+   "HAL",
+   "GMRAIRPORT"
+  ]
+ },
+ "Capital Goods": {
+  "group": "Industrials",
+  "kind": "sub",
+  "members": [
+   "ABB",
+   "SIEMENS",
+   "BHEL",
+   "CGPOWER",
+   "HAVELLS",
+   "POLYCAB",
+   "KEI",
+   "THERMAX",
+   "HBLENGINE",
+   "SUZLON"
+  ]
+ },
+ "Defence": {
+  "group": "Industrials",
+  "kind": "sub",
+  "members": [
+   "HAL",
+   "BEL",
+   "BDL",
+   "MAZDOCK",
+   "COCHINSHIP",
+   "BEML",
+   "DATAPATTNS",
+   "PARAS",
+   "ZENTEC",
+   "SOLARINDS"
+  ]
+ },
+ "Railways": {
+  "group": "Industrials",
+  "kind": "sub",
+  "members": [
+   "RVNL",
+   "IRCTC",
+   "IRFC",
+   "RAILTEL",
+   "TITAGARH",
+   "IRCON",
+   "JWL",
+   "TEXRAIL"
+  ]
+ },
+ "Construction / EPC": {
+  "group": "Industrials",
+  "kind": "sub",
+  "members": [
+   "LT",
+   "NCC",
+   "KEC",
+   "RITES",
+   "NBCC",
+   "PNCINFRA",
+   "HGINFRA",
+   "KNRCON",
+   "IRB"
+  ]
+ },
+ "Logistics": {
+  "group": "Industrials",
+  "kind": "sub",
+  "members": [
+   "ADANIPORTS",
+   "CONCOR",
+   "BLUEDART",
+   "DELHIVERY",
+   "TCI",
+   "MAHLOG",
+   "VRLLOG"
+  ]
+ },
+ "Metal": {
+  "group": "Materials",
+  "kind": "sector",
+  "members": [
+   "TATASTEEL",
+   "HINDALCO",
+   "JSWSTEEL",
+   "VEDL",
+   "ADANIENT",
+   "JINDALSTEL",
+   "SAIL",
+   "NMDC",
+   "HINDZINC",
+   "NATIONALUM",
+   "APLAPOLLO",
+   "JSL",
+   "HINDCOPPER"
+  ]
+ },
+ "Cement": {
+  "group": "Materials",
+  "kind": "sub",
+  "members": [
+   "ULTRACEMCO",
+   "GRASIM",
+   "AMBUJACEM",
+   "SHREECEM",
+   "ACC",
+   "DALBHARAT",
+   "JKCEMENT",
+   "RAMCOCEM",
+   "NUVOCO",
+   "JKLAKSHMI",
+   "BIRLACORPN",
+   "INDIACEM"
+  ]
+ },
+ "Chemicals": {
+  "group": "Materials",
+  "kind": "sub",
+  "members": [
+   "PIDILITIND",
+   "SRF",
+   "DEEPAKNTR",
+   "AARTIIND",
+   "NAVINFLUOR",
+   "ATUL",
+   "VINATIORGA",
+   "FINEORG",
+   "ALKYLAMINE",
+   "TATACHEM",
+   "UPL"
+  ]
+ },
+ "Paints": {
+  "group": "Materials",
+  "kind": "sub",
+  "members": [
+   "ASIANPAINT",
+   "BERGEPAINT",
+   "KANSAINER",
+   "AKZOINDIA",
+   "INDIGOPNTS"
+  ]
+ },
+ "Fertilizers": {
+  "group": "Materials",
+  "kind": "sub",
+  "members": [
+   "COROMANDEL",
+   "CHAMBLFERT",
+   "GNFC",
+   "RCF",
+   "NFL",
+   "GSFC",
+   "FACT",
+   "PARADEEP"
+  ]
+ },
+ "Sugar": {
+  "group": "Materials",
+  "kind": "sub",
+  "members": [
+   "BALRAMCHIN",
+   "BAJAJHIND",
+   "EIDPARRY",
+   "DHAMPURSUG",
+   "TRIVENI",
+   "DALMIASUG",
+   "RENUKA"
+  ]
+ },
+ "Textiles": {
+  "group": "Materials",
+  "kind": "sub",
+  "members": [
+   "PAGEIND",
+   "KPRMILL",
+   "TRIDENT",
+   "WELSPUNLIV",
+   "RAYMOND",
+   "ARVIND",
+   "GOKEX",
+   "VTL"
+  ]
+ },
+ "Oil & Gas": {
+  "group": "Energy & Utilities",
+  "kind": "sector",
+  "members": [
+   "RELIANCE",
+   "ONGC",
+   "IOC",
+   "BPCL",
+   "GAIL",
+   "HINDPETRO",
+   "ATGL",
+   "IGL",
+   "MGL",
+   "OIL",
+   "PETRONET",
+   "GSPL",
+   "CASTROLIND"
+  ]
+ },
+ "Energy": {
+  "group": "Energy & Utilities",
+  "kind": "sector",
+  "members": [
+   "RELIANCE",
+   "NTPC",
+   "POWERGRID",
+   "ONGC",
+   "COALINDIA",
+   "ADANIGREEN",
+   "TATAPOWER",
+   "ADANIENSOL",
+   "IOC",
+   "BPCL",
+   "NHPC",
+   "JSWENERGY",
+   "GAIL"
+  ]
+ },
+ "Power / Utilities": {
+  "group": "Energy & Utilities",
+  "kind": "sub",
+  "members": [
+   "NTPC",
+   "POWERGRID",
+   "TATAPOWER",
+   "ADANIGREEN",
+   "ADANIENSOL",
+   "JSWENERGY",
+   "NHPC",
+   "SJVN",
+   "TORNTPOWER",
+   "CESC",
+   "NLCINDIA"
+  ]
+ },
+ "Gas Distribution": {
+  "group": "Energy & Utilities",
+  "kind": "sub",
+  "members": [
+   "IGL",
+   "MGL",
+   "GUJGASLTD",
+   "ATGL",
+   "GSPL",
+   "AEGISLOG"
+  ]
+ },
+ "OMC / Refiners": {
+  "group": "Energy & Utilities",
+  "kind": "sub",
+  "members": [
+   "RELIANCE",
+   "IOC",
+   "BPCL",
+   "HINDPETRO",
+   "MRPL",
+   "CHENNPETRO"
+  ]
+ },
+ "Media": {
+  "group": "Telecom & Media",
+  "kind": "sector",
+  "members": [
+   "ZEEL",
+   "SUNTV",
+   "PVRINOX",
+   "NETWORK18",
+   "TV18BRDCST",
+   "SAREGAMA",
+   "NAZARA",
+   "HATHWAY",
+   "TIPSINDLTD"
+  ]
+ },
+ "Telecom": {
+  "group": "Telecom & Media",
+  "kind": "sub",
+  "members": [
+   "BHARTIARTL",
+   "IDEA",
+   "INDUSTOWER",
+   "TATACOMM",
+   "HFCL",
+   "TEJASNET",
+   "ITI",
+   "ROUTE"
+  ]
+ },
+ "Realty": {
+  "group": "Real Estate",
+  "kind": "sector",
+  "members": [
+   "DLF",
+   "LODHA",
+   "GODREJPROP",
+   "PRESTIGE",
+   "OBEROIRLTY",
+   "PHOENIXLTD",
+   "BRIGADE",
+   "ANANTRAJ",
+   "SOBHA",
+   "MAHLIFE"
+  ]
+ },
+ "PSE (Public Sector)": {
+  "group": "Thematic",
+  "kind": "sector",
+  "members": [
+   "NTPC",
+   "POWERGRID",
+   "COALINDIA",
+   "ONGC",
+   "BEL",
+   "IOC",
+   "HAL",
+   "PFC",
+   "RECLTD",
+   "GAIL",
+   "BHEL",
+   "NHPC",
+   "OIL",
+   "NMDC",
+   "SAIL"
+  ]
+ }
+}
