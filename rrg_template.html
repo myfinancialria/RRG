@@ -5,107 +5,110 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <style>
 :root{
- --bg:#0a0d13;--card:#121826;--card2:#0e1420;--ink:#eef1f6;--mut:#93a0b5;--line:#212a3c;
- --lead:#22c55e;--imp:#3b82f6;--weak:#f59e0b;--lag:#ef4444;--accent:#8b5cf6;
+ --bg:#f6f8fb;--panel:#ffffff;--ink:#1f2733;--mut:#6b7280;--line:#e6e9ef;--soft:#f1f4f9;
+ --lead:#16a34a;--imp:#2563eb;--weak:#d97706;--lag:#dc2626;--accent:#6d28d9;
+ --lead-bg:#e9f9ef;--imp-bg:#eaf1fe;--weak-bg:#fdf3e3;--lag-bg:#fdecec;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);
- font:14.5px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-a{color:#9db4ff;text-decoration:none}
-.shell{max-width:1180px;margin:0 auto;padding:22px 20px 60px}
-header h1{margin:0;font-size:23px;font-weight:700;letter-spacing:-.2px}
-header .lede{color:var(--mut);font-size:14px;margin-top:6px;max-width:760px}
-.badge{display:inline-block;background:#1a2233;border:1px solid var(--line);color:var(--mut);
- border-radius:999px;padding:3px 11px;font-size:12px;margin-top:10px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
-.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;margin-top:18px}
-@media(max-width:880px){.grid{grid-template-columns:1fr}}
+ font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--imp);text-decoration:none}
+.shell{max-width:1280px;margin:0 auto;padding:18px 18px 60px}
+header h1{margin:0;font-size:21px;font-weight:700;letter-spacing:-.2px}
+header .lede{color:var(--mut);font-size:13.5px;margin-top:5px;max-width:820px}
+.badge{display:inline-block;background:var(--soft);border:1px solid var(--line);color:var(--mut);
+ border-radius:999px;padding:3px 11px;font-size:12px;margin-top:9px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px}
 
-/* current-view callout */
-.view{background:linear-gradient(180deg,#15203a,#111726);border:1px solid #243352;
- border-radius:14px;padding:16px 18px;margin-top:18px}
-.view h2{margin:0 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:#9fb3d9}
-.view p{margin:0;font-size:15.5px;line-height:1.55}
-.view .pill{display:inline-block;padding:1px 8px;border-radius:6px;font-weight:600;font-size:13.5px}
+.view{background:linear-gradient(180deg,#fbfdff,#f3f7ff);border:1px solid #dde7f7;
+ border-radius:12px;padding:13px 16px;margin-top:14px}
+.view h2{margin:0 0 5px;font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;color:#5b6b86}
+.view p{margin:0;font-size:14.5px;line-height:1.5}
+.view .pill{display:inline-block;padding:0 7px;border-radius:6px;font-weight:600}
 
-/* controls */
-.controls{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin:16px 0 4px}
-.seg{display:inline-flex;background:var(--card2);border:1px solid var(--line);border-radius:10px;overflow:hidden}
-.seg button{background:transparent;border:0;color:var(--mut);padding:7px 13px;font-size:13px;cursor:pointer}
+.controls{display:flex;flex-wrap:wrap;gap:9px 14px;align-items:center;margin:14px 0 0}
+.ctl-label{color:var(--mut);font-size:12px}
+.seg{display:inline-flex;background:var(--soft);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{background:transparent;border:0;color:var(--mut);padding:6px 12px;font-size:12.5px;cursor:pointer}
 .seg button.on{background:var(--accent);color:#fff;font-weight:600}
-.ctl-label{color:var(--mut);font-size:12px;margin-right:2px}
-.sel{background:var(--card2);border:1px solid var(--line);color:var(--ink);
- border-radius:10px;padding:7px 11px;font-size:13px;cursor:pointer}
-.tag-sub{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.4px;
- color:var(--mut);border:1px solid var(--line);border-radius:4px;padding:0 4px;margin-left:5px;vertical-align:middle}
-.play{background:var(--accent);color:#fff;border:0;border-radius:10px;padding:8px 14px;
- font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;gap:7px;align-items:center}
-.play.paused{background:#1a2233;color:var(--ink);border:1px solid var(--line)}
-.scrub{display:flex;align-items:center;gap:12px;margin-top:12px}
+.sel{background:var(--panel);border:1px solid var(--line);color:var(--ink);
+ border-radius:9px;padding:6px 10px;font-size:12.5px;cursor:pointer}
+.play{background:var(--accent);color:#fff;border:0;border-radius:9px;padding:7px 13px;
+ font-size:12.5px;font-weight:600;cursor:pointer}
+.play.paused{background:var(--panel);color:var(--ink);border:1px solid var(--line)}
+.scrub{display:flex;align-items:center;gap:12px;margin-top:10px}
 .scrub input[type=range]{flex:1;accent-color:var(--accent)}
-.scrub .date{font-variant-numeric:tabular-nums;color:var(--ink);font-size:13px;min-width:96px;text-align:right}
+.scrub .date{font-variant-numeric:tabular-nums;font-size:13px;min-width:96px;text-align:right}
 
-.chartbox{position:relative;height:560px}
-.qlegend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;color:var(--mut);font-size:12.5px}
-.qlegend b{color:var(--ink)}
-.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
-.bg-Leading{background:var(--lead)}.bg-Improving{background:var(--imp)}
-.bg-Weakening{background:var(--weak)}.bg-Lagging{background:var(--lag)}
-.c-Leading{color:var(--lead)}.c-Improving{color:var(--imp)}
-.c-Weakening{color:var(--weak)}.c-Lagging{color:var(--lag)}
+.layout{display:grid;grid-template-columns:212px minmax(0,1fr);gap:14px;margin-top:12px}
+@media(max-width:840px){.layout{grid-template-columns:1fr}}
+.sidebar{padding:6px;max-height:660px;overflow:auto}
+.sb-h{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--mut);
+ padding:8px 10px 6px;font-weight:700}
+.sbitem{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;
+ font-size:12.8px;cursor:pointer;color:#374151}
+.sbitem:hover{background:var(--soft)}
+.sbitem.active{background:#eef0ff;color:var(--accent);font-weight:600}
+.cdot{width:9px;height:9px;border-radius:50%;flex:none}
+.tag-sub{font-size:8.5px;font-weight:700;letter-spacing:.3px;color:var(--mut);
+ border:1px solid var(--line);border-radius:4px;padding:0 3px;margin-left:auto}
 
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--line)}
-th{color:var(--mut);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
-td.r{text-align:right;font-variant-numeric:tabular-nums}
-.sym{color:var(--mut);font-size:11.5px}
-.trend-up{color:var(--lead)}.trend-dn{color:var(--lag)}
-.srow{cursor:pointer}.srow:hover{background:#0e1626}
-.mline{color:var(--lead);font-size:11px;font-weight:600}
-.mline.zero{color:var(--mut);font-weight:400}
-.caret{display:inline-block;width:9px;color:var(--accent);transition:transform .15s}
-.srow.open .caret{transform:rotate(90deg)}
-.drow td{background:#0d1320;padding:10px 10px 12px}
-.drow .hd{color:var(--mut);font-size:11px;margin-bottom:7px}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{background:#10311e;border:1px solid #1c5234;color:#86e7ab;border-radius:8px;
- padding:3px 9px;font-size:11.5px;white-space:nowrap}
-.chip b{font-weight:600;color:#b9f3cf}.chip small{color:#6fbf8e;margin-left:6px}
-.chip.none{background:#1a2233;border-color:#2a3550;color:var(--mut)}
+.chartbox{position:relative;height:520px;padding:8px}
+.quads{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+@media(max-width:840px){.quads{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.quads{grid-template-columns:1fr}}
+.qcard{overflow:hidden}
+.qhead{padding:9px 12px;font-weight:700;font-size:13.5px;display:flex;align-items:center;gap:8px}
+.qhead .cnt{background:rgba(0,0,0,.12);border-radius:6px;padding:0 7px;font-size:12px}
+.qbody{padding:6px 6px 8px}
+.qrow{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:7px;
+ font-size:12.6px;cursor:pointer}
+.qrow:hover{background:var(--soft)}
+.qempty{color:var(--mut);font-size:12px;padding:8px 10px}
 
-/* quadrant explainer */
-.quads{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-@media(max-width:560px){.quads{grid-template-columns:1fr}}
-.quad{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--card2)}
-.quad h4{margin:0 0 4px;font-size:14.5px;display:flex;align-items:center;gap:8px}
-.quad p{margin:0;color:var(--mut);font-size:12.8px}
-.quad .act{display:inline-block;margin-top:8px;font-size:12px;font-weight:600}
+.stockpanel{padding:14px 16px;margin-top:14px}
+.sp-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:15px;margin-bottom:10px}
+.sp-head .q{font-weight:600}
+.clear{margin-left:auto;background:var(--soft);border:1px solid var(--line);border-radius:8px;
+ padding:5px 11px;font-size:12px;cursor:pointer;color:var(--ink)}
+.hd{color:var(--mut);font-size:11.5px;margin:10px 0 7px;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{border-radius:8px;padding:3px 9px;font-size:11.8px;white-space:nowrap;border:1px solid}
+.chip.good{background:#e9f9ef;border-color:#bbe9cc;color:#136b34}
+.chip.good small{color:#3f9b63;margin-left:6px}
+.chip.bad{background:var(--soft);border-color:var(--line);color:var(--mut)}
+.chip.bad small{margin-left:6px}
 
 .section{margin-top:26px}
 .section h3{font-size:16px;margin:0 0 10px}
-details{border:1px solid var(--line);border-radius:10px;padding:0 14px;margin-bottom:8px;background:var(--card2)}
+.quad-ex{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.quad-ex{grid-template-columns:1fr}}
+.quad-ex .q{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--panel)}
+.quad-ex h4{margin:0 0 4px;font-size:14.5px;display:flex;align-items:center;gap:8px}
+.quad-ex p{margin:0;color:var(--mut);font-size:12.8px}
+.quad-ex .act{display:inline-block;margin-top:8px;font-size:12px;font-weight:600}
+.c-lead{color:var(--lead)}.c-imp{color:var(--imp)}.c-weak{color:var(--weak)}.c-lag{color:var(--lag)}
+.steps{counter-reset:s;padding:0;margin:8px 0 0;list-style:none}
+.steps li{counter-increment:s;position:relative;padding:6px 0 6px 30px;color:#374151;font-size:13.4px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:5px;width:20px;height:20px;
+ background:var(--accent);color:#fff;border-radius:50%;font-size:11px;font-weight:700;
+ display:flex;align-items:center;justify-content:center}
+details{border:1px solid var(--line);border-radius:10px;padding:0 14px;margin-bottom:8px;background:var(--panel)}
 details summary{cursor:pointer;padding:12px 0;font-weight:600;list-style:none;font-size:14px}
 details summary::-webkit-details-marker{display:none}
 details summary::before{content:'+ ';color:var(--accent)}
 details[open] summary::before{content:'– '}
-details p{margin:0 0 12px;color:var(--mut);font-size:13.3px}
-.steps{counter-reset:s;padding:0;margin:10px 0 0;list-style:none}
-.steps li{counter-increment:s;position:relative;padding:6px 0 6px 30px;color:var(--mut);font-size:13.4px}
-.steps li::before{content:counter(s);position:absolute;left:0;top:5px;width:20px;height:20px;
- background:var(--accent);color:#fff;border-radius:50%;font-size:11px;font-weight:700;
- display:flex;align-items:center;justify-content:center}
-.steps li b{color:var(--ink)}
-.foot{color:var(--mut);font-size:11.8px;margin-top:30px;border-top:1px solid var(--line);padding-top:16px}
+details p{margin:0 0 12px;color:var(--mut);font-size:13.2px}
+.foot{color:var(--mut);font-size:11.6px;margin-top:28px;border-top:1px solid var(--line);padding-top:15px}
 </style></head>
 <body>
 <div class="shell">
 <header>
   <h1>Sector Rotation — Where is the money going?</h1>
-  <div class="lede">Markets move in cycles. Big money quietly rotates from one sector to the next,
-   often weeks before it shows up in the headlines. This chart (a <b>Relative Rotation Graph</b>)
-   shows which Indian sectors are <b>leading</b>, <b>fading</b>, <b>lagging</b> or <b>turning up</b>
-   versus the broad market — in one picture. Start with the broad sectors, then drill into
-   <b>sub-sectors</b> (NBFCs, Insurance, Defence, Cement, Chemicals, Telecom and more) using the filters.</div>
+  <div class="lede">A <b>Relative Rotation Graph</b>: each sector is a moving dot measured against the
+   Nifty 50. Right of centre = stronger than the market; above centre = gaining momentum. Sectors drift
+   <b>clockwise</b>: Improving → Leading → Weakening → Lagging. Pick any index on the left to isolate it
+   and see the stocks inside that are trending.</div>
   <span class="badge" id="badge">loading…</span>
 </header>
 
@@ -114,160 +117,119 @@ details p{margin:0 0 12px;color:var(--mut);font-size:13.3px}
   <p id="narrative">…</p>
 </div>
 
-<div class="grid">
-  <div class="card">
-    <div class="controls">
-      <span class="ctl-label">View</span>
-      <div class="seg" id="freqSeg">
-        <button data-freq="weekly" class="on">Weekly · steady</button>
-        <button data-freq="daily">Daily · twitchy</button>
-      </div>
-      <span class="ctl-label">Trail</span>
-      <div class="seg" id="tailSeg">
-        <button data-tail="4">4</button><button data-tail="6">6</button>
-        <button data-tail="8" class="on">8</button><button data-tail="12">12</button>
-        <button data-tail="16">16</button>
-      </div>
-      <button class="play paused" id="playBtn">▶ Play rotation</button>
-    </div>
-    <div class="controls">
-      <span class="ctl-label">Show</span>
-      <select id="groupSel" class="sel"></select>
-      <div class="seg" id="depthSeg">
-        <button data-sub="0" class="on">Broad sectors</button>
-        <button data-sub="1">Incl. sub-sectors</button>
-      </div>
-      <span class="ctl-label" id="countLbl"></span>
-    </div>
-    <div class="scrub">
-      <input type="range" id="scrub" min="0" max="0" value="0">
-      <span class="date" id="scrubDate">—</span>
-    </div>
-
-    <div class="chartbox"><canvas id="rrg"></canvas></div>
-    <div class="qlegend">
-      <span><span class="dot bg-Leading"></span><b>Leading</b> strong &amp; rising</span>
-      <span><span class="dot bg-Weakening"></span><b>Weakening</b> strong but cooling</span>
-      <span><span class="dot bg-Lagging"></span><b>Lagging</b> weak &amp; falling</span>
-      <span><span class="dot bg-Improving"></span><b>Improving</b> weak but turning up</span>
-    </div>
+<div class="controls">
+  <span class="ctl-label">View</span>
+  <div class="seg" id="freqSeg">
+    <button data-freq="weekly" class="on">Weekly</button>
+    <button data-freq="daily">Daily</button>
   </div>
-
-  <div class="card">
-    <table><thead><tr><th>Sector</th><th>Status</th>
-      <th class="r">Strength</th><th class="r">Trend</th></tr></thead>
-      <tbody id="tbody"></tbody></table>
-    <div style="color:var(--mut);font-size:11.5px;margin-top:10px">
-      <b>Click any sector</b> to list its stocks in a confirmed uptrend
-      (50-DMA &gt; 200-DMA <i>and</i> price &gt; 50-DMA).<br>
-      <b>Strength</b> = RS-Ratio (100 = same as Nifty). <b>Trend</b> = RS-Momentum
-      (above 100 and rising = gaining ground).</div>
+  <span class="ctl-label">Trail</span>
+  <div class="seg" id="tailSeg">
+    <button data-tail="4">4</button><button data-tail="6">6</button>
+    <button data-tail="8" class="on">8</button><button data-tail="12">12</button>
+    <button data-tail="16">16</button>
   </div>
+  <span class="ctl-label">Group</span>
+  <select id="groupSel" class="sel"></select>
+  <div class="seg" id="depthSeg">
+    <button data-sub="0" class="on">Broad</button>
+    <button data-sub="1">+ Sub-sectors</button>
+  </div>
+  <button class="play paused" id="playBtn">▶ Play</button>
+</div>
+<div class="scrub">
+  <input type="range" id="scrub" min="0" max="0" value="0">
+  <span class="date" id="scrubDate">—</span>
+</div>
+
+<div class="layout">
+  <aside class="card sidebar">
+    <div class="sb-h">Index</div>
+    <div id="sblist"></div>
+  </aside>
+  <main>
+    <div class="card"><div class="chartbox"><canvas id="rrg"></canvas></div></div>
+    <div id="below"></div>
+  </main>
 </div>
 
 <div class="section">
   <h3>How to read the chart</h3>
   <p style="color:var(--mut);margin:0 0 4px;font-size:13.5px">The centre is the market (Nifty 50).
-   A sector to the <b>right</b> is stronger than the market; <b>above</b> the middle it's accelerating.
-   Sectors normally drift <b>clockwise</b> through these four stages:</p>
-  <div class="quads">
-    <div class="quad"><h4><span class="dot bg-Improving"></span>Improving <span class="c-Improving">(top-left)</span></h4>
-      <p>Still weaker than the market, but momentum has turned up. These are the potential next leaders.</p>
-      <span class="act c-Improving">→ Add to watchlist, early nibble</span></div>
-    <div class="quad"><h4><span class="dot bg-Leading"></span>Leading <span class="c-Leading">(top-right)</span></h4>
-      <p>Stronger than the market and still gaining. The current outperformers doing the heavy lifting.</p>
-      <span class="act c-Leading">→ Ride the trend, add on dips</span></div>
-    <div class="quad"><h4><span class="dot bg-Weakening"></span>Weakening <span class="c-Weakening">(bottom-right)</span></h4>
-      <p>Still strong, but momentum is cooling. Leaders that may be getting tired.</p>
-      <span class="act c-Weakening">→ Book some profit, tighten stops</span></div>
-    <div class="quad"><h4><span class="dot bg-Lagging"></span>Lagging <span class="c-Lagging">(bottom-left)</span></h4>
-      <p>Weaker than the market and still sliding. Best left alone until they start to improve.</p>
-      <span class="act c-Lagging">→ Avoid / stay out</span></div>
+   Sectors normally rotate <b>clockwise</b> through these four stages:</p>
+  <div class="quad-ex">
+    <div class="q"><h4><span class="cdot" style="background:var(--imp)"></span>Improving <span class="c-imp">(top-left)</span></h4>
+      <p>Still weaker than the market, but momentum has turned up — the potential next leaders.</p>
+      <span class="act c-imp">→ Watchlist, early nibble</span></div>
+    <div class="q"><h4><span class="cdot" style="background:var(--lead)"></span>Leading <span class="c-lead">(top-right)</span></h4>
+      <p>Stronger than the market and still gaining — the current outperformers.</p>
+      <span class="act c-lead">→ Ride the trend, add on dips</span></div>
+    <div class="q"><h4><span class="cdot" style="background:var(--weak)"></span>Weakening <span class="c-weak">(bottom-right)</span></h4>
+      <p>Still strong, but momentum is cooling — leaders that may be tiring.</p>
+      <span class="act c-weak">→ Book some profit, tighten stops</span></div>
+    <div class="q"><h4><span class="cdot" style="background:var(--lag)"></span>Lagging <span class="c-lag">(bottom-left)</span></h4>
+      <p>Weaker than the market and still sliding — best left alone until they improve.</p>
+      <span class="act c-lag">→ Avoid / stay out</span></div>
   </div>
 </div>
 
 <div class="section">
   <h3>How to use it (5 steps)</h3>
   <ol class="steps">
-    <li>Pick a <b>view</b>: <b>Weekly</b> for the big-picture trend, <b>Daily</b> for a faster, noisier read.</li>
+    <li>Pick a <b>view</b>: <b>Weekly</b> for the big trend, <b>Daily</b> for a faster, noisier read.</li>
     <li>Look at the <b>tails</b>. A long, straight tail = a persistent move. A tail that <b>hooks</b> back means the sector is losing conviction.</li>
-    <li>Favour sectors in <b>Leading</b> and rotating up into it from <b>Improving</b>. Be cautious on names sliding from <b>Weakening</b> toward <b>Lagging</b>.</li>
-    <li>Hit <b>▶ Play</b> or drag the slider to watch how sectors rotated over the last few months — direction matters more than the single dot.</li>
-    <li>Confirm with the actual stocks before acting. RRG shows the <b>tide</b>, not the entry. It's a map, not a trade signal.</li>
+    <li>Favour sectors in <b>Leading</b> and those rotating up from <b>Improving</b>; be cautious on names sliding from <b>Weakening</b> toward <b>Lagging</b>.</li>
+    <li>Hit <b>▶ Play</b> or drag the slider to replay the last few months — direction matters more than the single dot.</li>
+    <li>Click a sector on the left to see which of its <b>stocks are in an uptrend</b> (50-DMA &gt; 200-DMA and price &gt; 50-DMA), then do your own research before acting.</li>
   </ol>
 </div>
 
 <div class="section">
   <h3>Frequently asked questions</h3>
   <details><summary>What is a Relative Rotation Graph (RRG)?</summary>
-    <p>RRG is a chart, created by Julius de Kempenaer, that shows how a group of things (here, sectors)
-     are performing <b>relative to a benchmark</b> (the Nifty 50) — and whether that relative performance
-     is getting better or worse. Instead of one line per sector, it plots each sector as a single moving
-     dot in a two-dimensional space, so you can compare all sectors at a glance and see which way the
-     money is rotating.</p></details>
+    <p>RRG, created by Julius de Kempenaer, shows how a group of sectors are performing <b>relative to a
+     benchmark</b> (the Nifty 50) and whether that relative performance is improving or worsening. Each
+     sector is a single moving dot, so you can compare all sectors at once and see where money is rotating.</p></details>
   <details><summary>What do the two axes mean?</summary>
-    <p>The horizontal axis is <b>RS-Ratio</b> — how strong a sector is versus the Nifty. 100 means it's
-     moving exactly in line with the market; above 100 it is outperforming, below 100 it is
-     underperforming. The vertical axis is <b>RS-Momentum</b> — whether that strength is speeding up or
-     slowing down. Above 100 the sector is gaining ground; below 100 it is losing ground. The exact
-     centre (100, 100) <i>is</i> the market itself.</p></details>
+    <p>The horizontal axis (<b>Trend / RS-Ratio</b>) is how strong a sector is versus the Nifty — 100 = in
+     line, above 100 = outperforming. The vertical axis (<b>Momentum / RS-Momentum</b>) is whether that
+     strength is speeding up or slowing down — above 100 = gaining ground. The exact centre (100, 100) is
+     the market itself.</p></details>
   <details><summary>What do the four quadrants mean?</summary>
-    <p><b>Leading</b> (top-right): stronger than the market and still improving — the current winners.
-     <b>Weakening</b> (bottom-right): still stronger than the market but momentum is fading — winners
-     getting tired. <b>Lagging</b> (bottom-left): weaker than the market and still falling — the
-     laggards. <b>Improving</b> (top-left): still weaker than the market but momentum has turned up —
-     possible future leaders. Healthy markets rotate <b>clockwise</b>:
-     Improving → Leading → Weakening → Lagging → Improving.</p></details>
+    <p><b>Leading</b> (top-right): stronger than the market and still improving. <b>Weakening</b>
+     (bottom-right): still strong but momentum fading. <b>Lagging</b> (bottom-left): weak and still
+     falling. <b>Improving</b> (top-left): weak but momentum turning up. Healthy markets rotate clockwise:
+     Improving → Leading → Weakening → Lagging.</p></details>
   <details><summary>How do I read the tails?</summary>
-    <p>Each dot drags a tail of its recent path. A <b>long, straight tail</b> means a steady, persistent
-     move — strong conviction. A tail that is <b>short or hooking back</b> on itself means the sector is
-     losing conviction and may be about to change direction. The direction the tail points matters more
-     than where the single dot sits today.</p></details>
-  <details><summary>Why is every sector bunched near the middle?</summary>
-    <p>Sectors are large, diversified baskets, so they rarely move very far from the overall market —
-     that is normal. What you are looking for is not distance from the centre but <b>which quadrant a
-     sector is in and which way its tail is heading</b>. Increase the trail length or switch to the
-     Daily view to see the rotation more clearly.</p></details>
+    <p>Each dot drags a tail of its recent path. A long, straight tail means a steady, persistent move; a
+     short or hooking tail means the sector is losing conviction and may change direction. The direction
+     the tail points matters more than where the dot sits today.</p></details>
+  <details><summary>What does "stocks in an uptrend" mean?</summary>
+    <p>Click any sector to reveal the stocks inside it in a clear uptrend, using a classic trend filter:
+     its <b>50-day moving average is above its 200-day moving average</b> and the <b>current price is
+     above the 50-day average</b>. Each chip also shows how far price is above its 50-DMA. This is an
+     <i>absolute</i> price-trend check on the stock — separate from the sector's <i>relative</i> RRG
+     position.</p></details>
+  <details><summary>What are sub-sectors?</summary>
+    <p>Broad sectors hide what's underneath. "Financials" splits into NBFCs, Insurance, Capital Markets and
+     Housing Finance, which often rotate very differently. Switch the toggle to <b>+ Sub-sectors</b> or
+     pick a <b>Group</b> to bring in the finer indices (marked <span class="tag-sub">SUB</span>). There are
+     45 indices in all — 17 broad sectors and 28 sub-sectors.</p></details>
   <details><summary>Daily or Weekly — which should I use?</summary>
-    <p><b>Weekly</b> smooths out day-to-day noise and is best for swing and positional decisions — most
-     people should anchor here. <b>Daily</b> reacts faster and is useful for timing, but it is noisier
-     and easy to over-read. A good habit: form your view on Weekly, then use Daily for fine-tuning.</p></details>
-  <details><summary>Can I buy a sector the moment it enters Leading?</summary>
-    <p>Not on its own. RRG shows the <b>structural tide</b>, not a precise entry. A single hop across a
-     line is often just noise. Look for a sector that has been travelling in a consistent direction for
-     several periods, then drill into the actual leading stocks within that sector to find an entry. Treat
-     RRG as a map, not a trade signal.</p></details>
-  <details><summary>How is each sector index built?</summary>
-    <p>Each sector here is a <b>cap-weighted basket of its real constituent stocks</b> (for example, the
-     Bank sector is HDFC Bank, ICICI Bank, SBI, and so on), weighted by market value just like the
-     official NSE sectoral indices. This is computed from this project's own price database, so it needs
-     no external data feed.</p></details>
-  <details><summary>What does "stocks with good momentum" mean?</summary>
-    <p>Click any sector row to reveal the individual stocks inside it that are in a clear uptrend. A stock
-     qualifies on a classic trend filter: its <b>50-day moving average is above its 200-day moving
-     average</b> (the longer-term trend is up) <b>and the current price is above the 50-day average</b>
-     (it is trading above its own trend). Each stock chip also shows how far price is above its 50-DMA.
-     This is an <i>absolute</i> price-trend check on the stock itself — separate from where its sector
-     sits on the RRG, which is measured <i>relative</i> to the Nifty.</p></details>
-  <details><summary>What are "sub-sectors" and how do I see them?</summary>
-    <p>Broad sectors can hide what's happening underneath. "Financials", for instance, splits into
-     <b>NBFCs, Insurance, Capital Markets and Housing Finance</b>, which often rotate very differently.
-     Use the <b>Show</b> dropdown to pick a single group (e.g. Healthcare → Pharma, Hospitals,
-     Diagnostics, CDMO/API), or switch the toggle to <b>"Incl. sub-sectors"</b> to overlay every finer
-     index at once. Sub-sectors are marked <span class="tag-sub">SUB</span> in the table. In all there
-     are 45 indices — 17 broad sectors and 28 sub-sectors.</p></details>
-  <details><summary>What is the benchmark and why the Nifty 50?</summary>
-    <p>The benchmark is the <b>Nifty 50</b> (via the NIFTYBEES ETF) — India's broad large-cap market.
-     "Sector rotation" is about money moving between sectors <i>within</i> the market, so measuring each
-     sector against the whole market is the natural reference point.</p></details>
-  <details><summary>How fresh is the data, and how often does it update?</summary>
-    <p>Values are <b>end-of-session</b> snapshots from this project's daily price database — not live
-     tick-by-tick. The "updated" date in the header shows the latest session included. Re-running the
-     tool after the database refreshes brings it fully current.</p></details>
-  <details><summary>Is this a buy/sell recommendation?</summary>
+    <p><b>Weekly</b> smooths out day-to-day noise and suits swing/positional decisions — anchor here.
+     <b>Daily</b> reacts faster but is noisier and easy to over-read. Form your view on Weekly, fine-tune
+     on Daily.</p></details>
+  <details><summary>Can I act on a single move into a quadrant?</summary>
+    <p>Rarely. RRG shows the structural tide, not a precise entry. A one-period hop across a line is often
+     noise. Look for a sector travelling consistently in one direction over several periods, then confirm
+     with the leading stocks inside it. Treat RRG as a map, not a trade signal.</p></details>
+  <details><summary>How is each sector index built and how fresh is the data?</summary>
+    <p>Each sector is a <b>cap-weighted basket of its real constituent stocks</b>, just like the official
+     NSE sectoral indices. Prices are <b>end-of-session</b> daily data; the "updated" date in the header
+     shows the latest session. The page rebuilds automatically every weekday evening.</p></details>
+  <details><summary>Is this investment advice?</summary>
     <p>No. This is an educational and research tool to understand market structure and sector trends. It
-     does not account for your goals, risk, or position sizing, and is <b>not investment advice</b>.
-     Always do your own research or consult a registered advisor before investing.</p></details>
+     does not account for your goals, risk or position sizing, and is <b>not investment advice</b>.</p></details>
 </div>
 
 <div class="foot" id="foot"></div>
@@ -275,140 +237,163 @@ details p{margin:0 0 12px;color:var(--mut);font-size:13.3px}
 
 <script>
 const DATA=/*RRG*/{}/*ENDRRG*/;
-const QC={Leading:'#22c55e',Improving:'#3b82f6',Weakening:'#f59e0b',Lagging:'#ef4444'};
-const ACT={Leading:'ride / add',Improving:'watch / nibble',Weakening:'trim / tighten',Lagging:'avoid'};
+const QC={Leading:'#16a34a',Improving:'#2563eb',Weakening:'#d97706',Lagging:'#dc2626'};
+const QBG={Leading:'#e9f9ef',Improving:'#eaf1fe',Weakening:'#fdf3e3',Lagging:'#fdecec'};
+const PALETTE=['#6366f1','#ef4444','#10b981','#f59e0b','#8b5cf6','#ec4899','#14b8a6','#f97316',
+ '#3b82f6','#84cc16','#a855f7','#06b6d4','#e11d48','#22c55e','#eab308','#0ea5e9','#d946ef',
+ '#f43f5e','#65a30d','#0891b2','#7c3aed','#db2777','#0d9488','#ea580c'];
+const ALL=DATA.freqs.weekly.sectors;
+const COLOR={}; ALL.forEach((s,i)=>COLOR[s.name]=PALETTE[i%PALETTE.length]);
 
-let state={freq:'weekly',tail:8,head:0,playing:false,timer:null,group:'All',subs:false};
-
+let state={freq:'weekly',tail:8,head:0,playing:false,timer:null,group:'All',subs:false,selected:null};
 const quad=(x,y)=> x>=100&&y>=100?'Leading' : x>=100?'Weakening' : y>=100?'Improving':'Lagging';
-const shortName=n=>n.replace(/\s+(Limited|Ltd\.?|Corporation|Company|Industries|Enterprises|\(India\))/gi,'').replace(/\s+&\s+/g,' & ').trim();
 const F=()=>DATA.freqs[state.freq];
-// sectors passing the current group / depth filters
+const shortName=n=>n.replace(/\s+(Limited|Ltd\.?|Corporation|Company|Industries|Enterprises|\(India\))/gi,'').trim();
 function visibleSectors(){return F().sectors.filter(s=>
   (state.group==='All'||s.group===state.group) &&
-  (state.subs||s.kind==='sector' || (state.group!=='All')) );}
+  (state.subs||s.kind==='sector'||state.group!=='All'));}
+function chartList(){if(state.selected){const s=F().sectors.find(x=>x.name===state.selected);return s?[s]:[];}
+  return visibleSectors();}
+function headAt(series,i){for(let k=i;k>=0;k--){if(series[k])return series[k];}return null;}
+function tailAt(series,i,tail){const out=[];for(let k=i;k>=0&&out.length<tail;k--){if(series[k])out.unshift({x:series[k][0],y:series[k][1]});}return out;}
 
-// last non-null point of a sector at or before index i
-function headAt(series,i){for(let k=i;k>=0;k--){if(series[k])return {p:series[k],i:k};}return null;}
-// up to `tail` non-null points ending at i
-function tailAt(series,i,tail){const out=[];for(let k=i;k>=0&&out.length<tail;k--){if(series[k])out.unshift({i:k,x:series[k][0],y:series[k][1]});}return out;}
-
-// ---- chart skeleton ----
-const xb={min:97,max:103},yb={min:97,max:103};
+// ---- chart plugins (light theme) ----
 const quadBands={id:'qb',beforeDraw(c){const{ctx,chartArea:a,scales}=c;
   const cx=scales.x.getPixelForValue(100),cy=scales.y.getPixelForValue(100);
-  const f=(x0,y0,x1,y1,col)=>{ctx.save();ctx.globalAlpha=.07;ctx.fillStyle=col;ctx.fillRect(x0,y0,x1-x0,y1-y0);ctx.restore();};
-  f(cx,a.top,a.right,cy,QC.Leading); f(cx,cy,a.right,a.bottom,QC.Weakening);
-  f(a.left,cy,cx,a.bottom,QC.Lagging); f(a.left,a.top,cx,cy,QC.Improving);
-  ctx.save();ctx.setLineDash([4,4]);ctx.strokeStyle='#33415c';ctx.beginPath();
+  const f=(x0,y0,x1,y1,col)=>{ctx.save();ctx.fillStyle=col;ctx.fillRect(x0,y0,x1-x0,y1-y0);ctx.restore();};
+  f(cx,a.top,a.right,cy,QBG.Leading); f(cx,cy,a.right,a.bottom,QBG.Weakening);
+  f(a.left,cy,cx,a.bottom,QBG.Lagging); f(a.left,a.top,cx,cy,QBG.Improving);
+  ctx.save();ctx.setLineDash([4,4]);ctx.strokeStyle='#c7cdd6';ctx.beginPath();
   ctx.moveTo(cx,a.top);ctx.lineTo(cx,a.bottom);ctx.moveTo(a.left,cy);ctx.lineTo(a.right,cy);
   ctx.stroke();ctx.restore();}};
 const quadLabels={id:'ql',afterDraw(c){const{ctx,chartArea:a}=c;ctx.save();
-  // big, always-visible name in each corner + a one-word meaning under it
-  const L=[['LEADING','strong & rising',a.right-12,a.top+8,'right','top',QC.Leading],
-           ['WEAKENING','cooling off',a.right-12,a.bottom-30,'right','top',QC.Weakening],
-           ['LAGGING','weak & falling',a.left+12,a.bottom-30,'left','top',QC.Lagging],
-           ['IMPROVING','turning up',a.left+12,a.top+8,'left','top',QC.Improving]];
-  L.forEach(([t,sub,x,y,al,vb,col])=>{ctx.textAlign=al;ctx.textBaseline=vb;
-    ctx.globalAlpha=.85;ctx.fillStyle=col;ctx.font='800 14px sans-serif';ctx.fillText(t,x,y);
-    ctx.globalAlpha=.55;ctx.font='600 10.5px sans-serif';ctx.fillText(sub,x,y+16);});ctx.restore();}};
-const headLabels={id:'hl',afterDatasetsDraw(c){const{ctx}=c;ctx.save();ctx.font='700 10px sans-serif';
+  const L=[['Improving',a.left+10,a.top+8,'left',QC.Improving],['Leading',a.right-10,a.top+8,'right',QC.Leading],
+           ['Lagging',a.left+10,a.bottom-22,'left',QC.Lagging],['Weakening',a.right-10,a.bottom-22,'right',QC.Weakening]];
+  ctx.font='700 13px sans-serif';ctx.textBaseline='top';
+  L.forEach(([t,x,y,al,col])=>{ctx.fillStyle=col;ctx.textAlign=al;ctx.globalAlpha=.85;ctx.fillText(t,x,y);});
+  ctx.restore();}};
+const headLabels={id:'hl',afterDatasetsDraw(c){const{ctx}=c;ctx.save();ctx.font='700 11px sans-serif';
   c.data.datasets.forEach((d,di)=>{if(!d._head)return;const m=c.getDatasetMeta(di);const p=m.data[0];if(!p)return;
     ctx.textAlign='left';ctx.lineWidth=3;ctx.lineJoin='round';
-    ctx.strokeStyle='#0a0d13';ctx.strokeText(' '+d._nm,p.x+6,p.y+3);
+    ctx.strokeStyle='#fff';ctx.strokeText(' '+d._nm,p.x+6,p.y+3);
     ctx.fillStyle=d._col;ctx.fillText(' '+d._nm,p.x+6,p.y+3);});ctx.restore();}};
 
 const chart=new Chart(document.getElementById('rrg'),{data:{datasets:[]},
   options:{maintainAspectRatio:false,animation:false,layout:{padding:6},
    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{const r=ctx.raw;
-     return `${ctx.dataset._nm}: strength ${r.x.toFixed(2)}, trend ${r.y.toFixed(2)}`;}}}},
-   scales:{x:{min:xb.min,max:xb.max,title:{display:true,text:'Relative strength vs Nifty  →',color:'#93a0b5'},
-      grid:{color:'#1a2233'},ticks:{color:'#93a0b5'}},
-     y:{min:yb.min,max:yb.max,title:{display:true,text:'Momentum  ↑',color:'#93a0b5'},
-      grid:{color:'#1a2233'},ticks:{color:'#93a0b5'}}}},
+     return `${ctx.dataset._nm}: Trend ${r.x.toFixed(2)}, Momentum ${r.y.toFixed(2)}`;}}}},
+   scales:{x:{title:{display:true,text:'Trend  (relative strength vs Nifty →)',color:'#6b7280'},
+      grid:{color:'#eef0f3'},ticks:{color:'#6b7280'}},
+     y:{title:{display:true,text:'Momentum  ↑',color:'#6b7280'},
+      grid:{color:'#eef0f3'},ticks:{color:'#6b7280'}}}},
   plugins:[quadBands,quadLabels,headLabels]});
 
-// symmetric, identical range on BOTH axes so (100,100) sits dead-centre and the
-// four quadrants are equal-sized squares — correct RRG geometry.
-function computeBounds(list){let m=0;list.forEach(s=>{const t=tailAt(s.series,state.head,state.tail);
-  t.forEach(p=>{m=Math.max(m,Math.abs(p.x-100),Math.abs(p.y-100));});});
-  const r=Math.max(0.8,m*1.15);
+function computeBounds(list){let m=0;list.forEach(s=>{tailAt(s.series,state.head,state.tail)
+  .forEach(p=>{m=Math.max(m,Math.abs(p.x-100),Math.abs(p.y-100));});});
+  const r=Math.max(0.8,m*1.18);
   chart.options.scales.x.min=100-r;chart.options.scales.x.max=100+r;
   chart.options.scales.y.min=100-r;chart.options.scales.y.max=100+r;}
 
 function render(){
-  const list=visibleSectors();
-  const ds=[];const rows=[];
+  const list=chartList();
+  const ds=[];
   list.forEach(s=>{const t=tailAt(s.series,state.head,state.tail);if(!t.length)return;
-    const h=t[t.length-1];const q=quad(h.x,h.y);const col=QC[q];const n=t.length;
+    const h=t[t.length-1];const col=COLOR[s.name];const n=t.length;
     ds.push({type:'line',_nm:s.name,data:t.map(p=>({x:p.x,y:p.y})),borderColor:col,borderWidth:2,
-      tension:.3,pointRadius:t.map((_,i)=>i===n-1?0:2),pointBackgroundColor:col,
+      tension:.3,pointRadius:t.map((_,i)=>i===n-1?0:1.8),pointBackgroundColor:col,
       borderCapStyle:'round',order:2});
     ds.push({type:'scatter',_head:true,_nm:s.name,_col:col,data:[{x:h.x,y:h.y}],
-      backgroundColor:col,borderColor:'#0a0d13',borderWidth:1.5,pointRadius:5.5,pointHoverRadius:8,order:1});
-    const prev=t.length>1?t[t.length-2]:h;
-    rows.push({name:s.name,sym:s.symbol,kind:s.kind,members:s.members||[],q,x:h.x,y:h.y,dy:h.y-prev.y});});
+      backgroundColor:col,borderColor:'#fff',borderWidth:1.5,pointRadius:6,pointHoverRadius:8,order:1});});
   computeBounds(list);chart.data.datasets=ds;chart.update('none');
 
-  // table — each sector row expands to its good-momentum stocks
-  const order={Leading:0,Improving:1,Weakening:2,Lagging:3};
-  rows.sort((a,b)=>order[a.q]-order[b.q]||b.x-a.x);
-  const ST=DATA.stocks||{};
-  document.getElementById('tbody').innerHTML=rows.map((r,i)=>{
-    const ar=r.dy>=0?'<span class="trend-up">↗ rising</span>':'<span class="trend-dn">↘ fading</span>';
-    const tag=r.kind==='sub'?'<span class="tag-sub">SUB</span>':'';
-    const good=r.members.map(s=>ST[s]).filter(x=>x&&x.good).sort((a,b)=>(b.above50||0)-(a.above50||0));
-    const tot=r.members.length;
-    const ml=good.length
-      ? `<span class="mline"><span class="caret">▸</span> ${good.length} of ${tot} stocks in uptrend</span>`
-      : `<span class="mline zero"><span class="caret">▸</span> 0 of ${tot} stocks in uptrend</span>`;
-    const chips=good.length
-      ? `<div class="hd">${good.length} stock${good.length>1?'s':''} with good momentum — 50-DMA above 200-DMA and price above the 50-DMA:</div>
-         <div class="chips">${good.map(g=>`<span class="chip"><b>${shortName(g.name)}</b>${g.above50!=null?`<small>+${g.above50}% vs 50-DMA</small>`:''}</span>`).join('')}</div>`
-      : `<div class="chips"><span class="chip none">No constituents are in an uptrend right now</span></div>`;
-    return `<tr class="srow" data-i="${i}"><td>${r.name}${tag}<br>${ml}</td>
-      <td class="c-${r.q}">${r.q}</td><td class="r">${r.x.toFixed(2)}</td>
-      <td class="r">${ar}</td></tr>
-      <tr class="drow" data-d="${i}" hidden><td colspan="4">${chips}</td></tr>`;}).join('');
-
-  narrate(rows);
-  document.getElementById('countLbl').textContent=`${rows.length} indices`;
+  renderBelow();
+  updateSidebar();
+  narrate();
   document.getElementById('scrubDate').textContent=F().dates[state.head]||'—';
 }
 
-function narrate(rows){
-  const by=q=>rows.filter(r=>r.q===q).map(r=>r.name);
+function rowsFor(sectors){const rows=[];sectors.forEach(s=>{const p=headAt(s.series,state.head);if(!p)return;
+  rows.push({name:s.name,kind:s.kind,members:s.members||[],q:quad(p[0],p[1]),x:p[0],y:p[1]});});return rows;}
+
+function renderBelow(){
+  const below=document.getElementById('below');
+  if(state.selected){
+    const s=F().sectors.find(x=>x.name===state.selected);
+    const p=s?headAt(s.series,state.head):null;
+    const ST=DATA.stocks||{};
+    const mem=(s?s.members:[]).map(m=>ST[m]).filter(Boolean);
+    const good=mem.filter(x=>x.good).sort((a,b)=>(b.above50||0)-(a.above50||0));
+    const bad=mem.filter(x=>!x.good).sort((a,b)=>(b.above50||0)-(a.above50||0));
+    const q=p?quad(p[0],p[1]):'—';
+    below.innerHTML=`<div class="card stockpanel">
+      <div class="sp-head"><span class="cdot" style="background:${COLOR[s.name]};width:12px;height:12px"></span>
+        <b>${s.name}</b> <span class="q" style="color:${QC[q]}">${q}</span>
+        <span style="color:var(--mut)">· ${good.length} of ${mem.length} stocks in uptrend</span>
+        <button class="clear" id="clearSel">✕ Show all sectors</button></div>
+      <div class="hd">In an uptrend — 50-DMA &gt; 200-DMA and price &gt; 50-DMA:</div>
+      <div class="chips">${good.length?good.map(g=>`<span class="chip good"><b>${shortName(g.name)}</b><small>+${g.above50}% vs 50-DMA</small></span>`).join(''):'<span class="qempty">None right now.</span>'}</div>
+      ${bad.length?`<div class="hd">Not in an uptrend:</div>
+      <div class="chips">${bad.map(g=>`<span class="chip bad">${shortName(g.name)}<small>${g.above50>=0?'+':''}${g.above50}%</small></span>`).join('')}</div>`:''}
+    </div>`;
+    document.getElementById('clearSel').onclick=()=>{state.selected=null;render();};
+    return;
+  }
+  const rows=rowsFor(visibleSectors());
+  const Q=[['Leading',QC.Leading,QBG.Leading],['Weakening',QC.Weakening,QBG.Weakening],
+           ['Lagging',QC.Lagging,QBG.Lagging],['Improving',QC.Improving,QBG.Improving]];
+  below.innerHTML='<div class="quads">'+Q.map(([q,col,bg])=>{
+    const items=rows.filter(r=>r.q===q).sort((a,b)=>b.x-a.x);
+    const body=items.length?items.map(it=>`<div class="qrow" data-sel="${it.name}">
+        <span class="cdot" style="background:${COLOR[it.name]}"></span>${it.name}
+        ${it.kind==='sub'?'<span class="tag-sub">SUB</span>':''}</div>`).join('')
+      :'<div class="qempty">None</div>';
+    return `<div class="card qcard"><div class="qhead" style="background:${bg};color:${col}">
+      ${q} <span class="cnt">${items.length}</span></div><div class="qbody">${body}</div></div>`;
+  }).join('')+'</div>';
+}
+
+function narrate(){
+  const rows=rowsFor(F().sectors.filter(s=>s.kind==='sector'));
+  const by=q=>rows.filter(r=>r.q===q).sort((a,b)=>b.x-a.x).map(r=>r.name);
   const lead=by('Leading'),imp=by('Improving'),weak=by('Weakening'),lag=by('Lagging');
-  const j=a=>a.length>2?a.slice(0,-1).join(', ')+' and '+a[a.length-1]:a.join(' and ');
-  const pill=(t,q)=>`<span class="pill c-${q}" style="background:${QC[q]}22">${t}</span>`;
+  const j=a=>a.length>3?a.slice(0,3).join(', ')+' and others':a.length>1?a.slice(0,-1).join(', ')+' and '+a[a.length-1]:a.join('');
+  const pill=(t,q)=>`<span class="pill" style="color:${QC[q]};background:${QBG[q]}">${t}</span>`;
   let s=[];
   if(lead.length) s.push(`Money is concentrated in ${pill(j(lead),'Leading')} — strong and still gaining.`);
-  if(imp.length)  s.push(`Watch ${pill(j(imp),'Improving')} — weaker than the market but turning up (the potential next leaders).`);
-  if(weak.length) s.push(`${pill(j(weak),'Weakening')} ${weak.length>1?'are':'is'} losing steam after a strong run.`);
-  if(lag.length)  s.push(`${pill(j(lag),'Lagging')} ${lag.length>1?'remain':'remains'} weak — best avoided for now.`);
+  if(imp.length)  s.push(`Watch ${pill(j(imp),'Improving')} — weak but turning up.`);
+  if(weak.length) s.push(`${pill(j(weak),'Weakening')} ${weak.length>1?'are':'is'} losing steam.`);
+  if(lag.length)  s.push(`${pill(j(lag),'Lagging')} ${lag.length>1?'remain':'remains'} weak.`);
   document.getElementById('narrative').innerHTML=s.join(' ')||'No sector data for this date.';
 }
+
+// ---- sidebar ----
+function buildSidebar(){const sb=document.getElementById('sblist');
+  sb.innerHTML=`<div class="sbitem active" data-sel="">📊 All Sectors</div>`+
+    ALL.map(s=>`<div class="sbitem" data-sel="${s.name}">
+      <span class="cdot" style="background:${COLOR[s.name]}"></span>${s.name}
+      ${s.kind==='sub'?'<span class="tag-sub">SUB</span>':''}</div>`).join('');
+  sb.addEventListener('click',e=>{const it=e.target.closest('.sbitem');if(!it)return;
+    state.selected=it.dataset.sel||null;render();});}
+function updateSidebar(){document.querySelectorAll('.sbitem').forEach(it=>
+  it.classList.toggle('active',(it.dataset.sel||null)===state.selected));}
+
+// quad-card click selects a sector
+document.getElementById('below').addEventListener('click',e=>{const r=e.target.closest('.qrow');if(!r)return;
+  state.selected=r.dataset.sel;render();});
 
 // ---- controls ----
 function setMax(){const n=F().dates.length;const sc=document.getElementById('scrub');
   sc.min=F().play_start;sc.max=n-1;if(state.head<F().play_start||state.head>n-1)state.head=n-1;sc.value=state.head;}
-
 document.getElementById('freqSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
-  state.freq=b.dataset.freq;[...e.currentTarget.children].forEach(c=>c.classList.toggle('on',c===b));
-  setMax();render();});
+  state.freq=b.dataset.freq;[...e.currentTarget.children].forEach(c=>c.classList.toggle('on',c===b));setMax();render();});
 document.getElementById('tailSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
   state.tail=+b.dataset.tail;[...e.currentTarget.children].forEach(c=>c.classList.toggle('on',c===b));render();});
 document.getElementById('depthSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
   state.subs=b.dataset.sub==='1';[...e.currentTarget.children].forEach(c=>c.classList.toggle('on',c===b));render();});
-document.getElementById('groupSel').addEventListener('change',e=>{state.group=e.target.value;render();});
-document.getElementById('tbody').addEventListener('click',e=>{const row=e.target.closest('.srow');if(!row)return;
-  const i=row.dataset.i;const dr=document.querySelector(`.drow[data-d="${i}"]`);if(!dr)return;
-  const open=dr.hasAttribute('hidden');if(open){dr.removeAttribute('hidden');row.classList.add('open');}
-  else{dr.setAttribute('hidden','');row.classList.remove('open');}});
+document.getElementById('groupSel').addEventListener('change',e=>{state.group=e.target.value;state.selected=null;render();});
 document.getElementById('scrub').addEventListener('input',e=>{state.head=+e.target.value;stop();render();});
-
 const playBtn=document.getElementById('playBtn');
-function stop(){state.playing=false;clearInterval(state.timer);playBtn.classList.add('paused');playBtn.textContent='▶ Play rotation';}
+function stop(){state.playing=false;clearInterval(state.timer);playBtn.classList.add('paused');playBtn.textContent='▶ Play';}
 function play(){state.playing=true;playBtn.classList.remove('paused');playBtn.textContent='⏸ Pause';
   if(state.head>=F().dates.length-1)state.head=F().play_start;
   state.timer=setInterval(()=>{if(state.head>=F().dates.length-1){stop();return;}
@@ -422,9 +407,10 @@ gsel.innerHTML='<option value="All">All groups</option>'+
 document.getElementById('badge').textContent=
   `Benchmark ${DATA.benchmark_name} · end-of-session · updated ${DATA.as_of}`;
 document.getElementById('foot').innerHTML=
-  `Each sector is a liquid NSE sector ETF measured against ${DATA.benchmark_name} (${DATA.benchmark}). `+
-  `RS-Ratio &amp; RS-Momentum use the JdK z-score method, smoothed. Centre of the chart = the market itself. `+
-  `Data is end-of-session, generated ${DATA.generated}. <b>For education and research only — not investment advice.</b>`;
-setMax();render();
+  `Each sector is a cap-weighted basket of its real constituent stocks, measured against `+
+  `${DATA.benchmark_name}. RS-Ratio (Trend) &amp; RS-Momentum use the JdK z-score method, smoothed; `+
+  `centre of the chart = the market. Data end-of-session, generated ${DATA.generated}. `+
+  `<b>For education and research only — not investment advice.</b>`;
+buildSidebar();setMax();render();
 </script>
 </body></html>
