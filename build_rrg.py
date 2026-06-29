@@ -54,10 +54,13 @@ def zscore(s, w):
     return (s - m) / sd
 
 
+SCALE = 1.8     # amplifies the z-score spread so the Trend/Momentum axes are readable (~95–105)
+
+
 def jdk(sec_close, bench_close, window, mom, smooth):
     rs = 100.0 * sec_close / bench_close
-    rs_ratio = (100.0 + zscore(rs, window)).ewm(span=smooth, adjust=False).mean()
-    rs_mom = (100.0 + zscore(rs_ratio.diff(mom), window)).ewm(span=smooth, adjust=False).mean()
+    rs_ratio = (100.0 + SCALE * zscore(rs, window)).ewm(span=smooth, adjust=False).mean()
+    rs_mom = (100.0 + SCALE * zscore(rs_ratio.diff(mom), window)).ewm(span=smooth, adjust=False).mean()
     return rs_ratio, rs_mom
 
 
@@ -146,6 +149,7 @@ def compute_stocks(daily_wide, symbols):
             "name": NAMES.get(sym, sym),
             "good": bool(dma50 > dma200 and px > dma50),
             "above50": round((px / dma50 - 1) * 100, 1),
+            "r5d": round((px / float(s.iloc[-6]) - 1) * 100, 1) if len(s) > 6 else None,
             "r1m": round((px / float(s.iloc[-22]) - 1) * 100, 1) if len(s) > 22 else None,
         }
     return out
