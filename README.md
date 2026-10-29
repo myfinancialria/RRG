@@ -12,7 +12,8 @@ Four quadrants, rotating clockwise: **Improving → Leading → Weakening → La
 ### 🔗 Live dashboard
 **https://myfinancialria.github.io/RRG/**
 
-Updated automatically every weekday evening after the NSE close.
+Updated automatically every weekday evening after the NSE close. The page shows the
+latest available end-of-session data; it is not an intraday feed.
 
 ## Features
 - **45 indices** — 17 broad NSE sectors + 28 sub-sectors (NBFC, Insurance, Defence,
@@ -21,6 +22,10 @@ Updated automatically every weekday evening after the NSE close.
 - **Daily / Weekly** toggle, adjustable **trail length**, **animated playback** and a
   **date scrubber** to replay how sectors rotated.
 - **Symmetric axes** centred at (100, 100) so the four quadrants are equal and correct.
+- A clearly separated four-quadrant board, with the current **top five strongest** broad sectors
+  (Leading + Improving) and **top five weakest** (Weakening + Lagging).
+- A daily research brief for those ten sectors with the latest available sector headlines and a
+  structural SWOT frame. Headlines are context, not a trading signal.
 - **Click any sector** to list the stocks inside it that are in a confirmed uptrend
   (**50-DMA > 200-DMA** and **price > 50-DMA**), with each stock's distance above its 50-DMA.
 - Plain-English "what the market is telling us" summary, a how-to-read guide, and a full FAQ.
@@ -29,8 +34,10 @@ Updated automatically every weekday evening after the NSE close.
 `build_rrg.py` is self-contained: it pulls daily prices from Yahoo Finance (no API key),
 builds the indices using cap-weights bundled in `data/weights.json`, computes the JdK
 RS-Ratio / RS-Momentum series, scores each constituent's trend, and renders the static
-dashboard into `docs/`. A GitHub Actions cron job (`.github/workflows/daily.yml`) runs it
-every weekday and commits the refreshed page; GitHub Pages serves `docs/`.
+dashboard into `docs/`. It also fetches a best-effort Google News RSS snapshot for each broad
+sector. A news-feed outage does not block the price build, and the page labels missing headlines.
+A GitHub Actions cron job (`.github/workflows/daily.yml`) runs it every weekday and commits the
+refreshed page; GitHub Pages serves `docs/`.
 
 ```bash
 pip install -r requirements.txt
@@ -38,8 +45,11 @@ python build_rrg.py        # writes docs/index.html + docs/rrg.json
 ```
 
 ### Data
-- **Prices** — Yahoo Finance, daily, auto-adjusted, ~2 years.
+- **Prices** — Yahoo Finance, daily, auto-adjusted, ~2 years. The build refuses to overwrite
+  the published dashboard if fewer than 60% of constituents are returned.
 - **Benchmark** — `^NSEI` (Nifty 50).
+- **Sector news** — Google News RSS, fetched at build time; headline links and timestamps are
+  retained in `docs/rrg.json`.
 - **Weights / names** — `data/weights.json`, `data/names.json` (market caps in ₹ crore).
   These move slowly; refresh occasionally. The index taxonomy lives in `data/indices.json`.
 

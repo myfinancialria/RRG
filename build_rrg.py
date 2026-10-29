@@ -18,7 +18,10 @@ Outputs
 Usage
   python build_rrg.py [--period 2y] [--window 14] [--mom 4] [--smooth 3]
 """
-import os, sys, json, datetime as dt
+import os, sys, json, datetime as dt, html, re
+from urllib.parse import quote_plus
+from urllib.request import Request, urlopen
+from xml.etree import ElementTree as ET
 import numpy as np
 import pandas as pd
 import yfinance as yf
@@ -33,6 +36,120 @@ BENCH_TICKER = "^NSEI"     # Yahoo ticker for Nifty 50
 BENCH_NAME = "Nifty 50"
 MIN_MEMBERS = 4
 
+# Broad-sector context used in the dashboard's daily research brief. These are
+# deliberately structural, not company-specific recommendations; the current
+# headlines are fetched separately at build time.
+SWOT = {
+    "Bank": {
+        "strengths": ["Deposit franchise and recurring interest income", "Operating leverage as credit grows"],
+        "weaknesses": ["Credit costs can rise quickly", "Net-interest margins are rate-sensitive"],
+        "opportunities": ["Formalisation and retail-credit penetration", "Digital distribution and cross-sell"],
+        "threats": ["Asset-quality cycle or deposit competition", "Regulatory capital and lending constraints"],
+    },
+    "Financial Services": {
+        "strengths": ["Diversified exposure to credit, insurance and asset management", "Strong domestic financialisation trend"],
+        "weaknesses": ["Mixed business quality across the basket", "Sensitive to liquidity and funding costs"],
+        "opportunities": ["Household savings moving to market products", "Under-penetrated protection and retirement products"],
+        "threats": ["Tighter regulation or mis-selling scrutiny", "Credit and market-cycle drawdowns"],
+    },
+    "IT": {
+        "strengths": ["Export revenues and recurring client relationships", "High cash generation and asset-light models"],
+        "weaknesses": ["Demand is tied to global technology budgets", "Large-cap concentration in the basket"],
+        "opportunities": ["Cloud, AI and enterprise modernisation spend", "Vendor consolidation and productivity deals"],
+        "threats": ["Rupee strength and wage inflation", "Discretionary cuts or faster automation"],
+    },
+    "Pharma": {
+        "strengths": ["Defensive demand and diversified product portfolios", "India's manufacturing and export base"],
+        "weaknesses": ["Regulatory observations can be company-specific", "Price erosion in generic markets"],
+        "opportunities": ["Chronic therapies and complex generics", "Domestic healthcare access expansion"],
+        "threats": ["USFDA or pricing action", "Currency, litigation and supply-chain risk"],
+    },
+    "Healthcare": {
+        "strengths": ["Non-discretionary demand and rising formal care", "Capacity additions can compound earnings"],
+        "weaknesses": ["Execution and occupancy vary by operator", "Capex and reimbursement discipline matter"],
+        "opportunities": ["Insurance coverage, diagnostics and premiumisation", "Tier-2/3 hospital expansion"],
+        "threats": ["Pricing controls and talent costs", "Execution delays or competitive capacity"],
+    },
+    "Auto": {
+        "strengths": ["Large domestic replacement and first-time buyer market", "Operating leverage in upcycles"],
+        "weaknesses": ["Demand is cyclical and financing-sensitive", "Commodity and currency inputs affect margins"],
+        "opportunities": ["SUV, premium, EV and export mix", "Platform sharing and localisation"],
+        "threats": ["Input-cost spikes and discounts", "Technology transition and regulation"],
+    },
+    "FMCG": {
+        "strengths": ["Resilient demand and distribution depth", "Pricing power in branded categories"],
+        "weaknesses": ["Valuations can embed long growth expectations", "Rural recovery may be uneven"],
+        "opportunities": ["Premiumisation and rural consumption", "Distribution expansion and innovation"],
+        "threats": ["Raw-material inflation and downtrading", "Private labels and local competition"],
+    },
+    "Consumer Durables": {
+        "strengths": ["Premiumisation and formal retail penetration", "Brand and distribution moats"],
+        "weaknesses": ["Discretionary demand is seasonal", "Working capital can expand with growth"],
+        "opportunities": ["Cooling, electronics and housing-linked demand", "Omnichannel and premium products"],
+        "threats": ["Commodity and currency pressure", "Promotional intensity or weak urban demand"],
+    },
+    "Infrastructure": {
+        "strengths": ["Government and private capex visibility", "Large order books in core assets"],
+        "weaknesses": ["Execution and working capital are material", "Conglomerate mix can obscure segment quality"],
+        "opportunities": ["Transport, power and urban infrastructure spending", "Manufacturing-led supply-chain investment"],
+        "threats": ["Project delays and cost overruns", "Funding, land and policy bottlenecks"],
+    },
+    "Metal": {
+        "strengths": ["Operating leverage to prices and volumes", "Domestic infrastructure demand"],
+        "weaknesses": ["Highly cyclical earnings", "Energy and freight costs are significant"],
+        "opportunities": ["Capacity additions and value-added products", "Domestic demand resilience"],
+        "threats": ["China/global oversupply", "Commodity-price and trade-policy shocks"],
+    },
+    "Oil & Gas": {
+        "strengths": ["Scale and strategic domestic importance", "Integrated businesses can buffer parts of the cycle"],
+        "weaknesses": ["Earnings depend on volatile commodities and spreads", "Policy can influence downstream economics"],
+        "opportunities": ["Gas adoption, refining upgrades and energy transition", "Domestic exploration and infrastructure"],
+        "threats": ["Crude-price and geopolitical shocks", "Carbon policy and substitution"],
+    },
+    "Energy": {
+        "strengths": ["Rising electricity demand and long asset lives", "Visible transition and grid investment"],
+        "weaknesses": ["Capital intensity and leverage", "Regulated returns can cap upside"],
+        "opportunities": ["Renewables, storage, transmission and data centres", "Industrial electrification"],
+        "threats": ["Fuel availability and tariff intervention", "Execution, financing and policy risk"],
+    },
+    "Media": {
+        "strengths": ["Digital reach and scalable content economics", "Advertising and subscription optionality"],
+        "weaknesses": ["Revenue is discretionary and volatile", "Audience fragmentation"],
+        "opportunities": ["Streaming, sports and regional content", "Digital monetisation and ad-tech"],
+        "threats": ["Platform bargaining power", "Content costs, regulation and weak ad cycles"],
+    },
+    "Realty": {
+        "strengths": ["Urbanisation and formal developer consolidation", "Operating leverage in strong markets"],
+        "weaknesses": ["High capital intensity and execution risk", "Regional concentration"],
+        "opportunities": ["Premium housing, commercial and redevelopment", "Lower financing costs and formalisation"],
+        "threats": ["Rates, approvals and inventory cycles", "Construction inflation and liquidity stress"],
+    },
+    "PSE (Public Sector)": {
+        "strengths": ["Strategic assets and policy-linked visibility", "Potential for balance-sheet repair and dividends"],
+        "weaknesses": ["Ownership and capital-allocation constraints", "Basket mixes unrelated businesses"],
+        "opportunities": ["Public capex, disinvestment and efficiency reforms", "Energy, defence and manufacturing themes"],
+        "threats": ["Policy intervention and tender timing", "Valuation mean reversion after crowded rallies"],
+    },
+}
+
+NEWS_QUERIES = {
+    "Bank": "India banks banking credit deposits RBI",
+    "Financial Services": "India financial services NBFC insurance mutual funds",
+    "IT": "India IT services technology exports AI cloud",
+    "Pharma": "India pharma drugmakers healthcare regulation",
+    "Healthcare": "India hospitals diagnostics healthcare",
+    "Auto": "India auto sales vehicles electric vehicles",
+    "FMCG": "India FMCG consumer goods rural consumption",
+    "Consumer Durables": "India consumer durables electronics appliances",
+    "Infrastructure": "India infrastructure capex roads power construction",
+    "Metal": "India steel metals aluminium commodity prices",
+    "Oil & Gas": "India oil gas refining energy",
+    "Energy": "India power utilities renewable energy grid",
+    "Media": "India media entertainment streaming advertising",
+    "Realty": "India real estate housing property developers",
+    "PSE (Public Sector)": "India public sector PSU policy divestment",
+}
+
 INDICES = json.load(open(os.path.join(DATA, "indices.json")))
 WEIGHTS = json.load(open(os.path.join(DATA, "weights.json")))
 NAMES = json.load(open(os.path.join(DATA, "names.json")))
@@ -45,6 +162,62 @@ def _opt(name, default, cast=str):
 def yf_ticker(sym):
     """NSE symbol -> Yahoo Finance ticker."""
     return sym + ".NS"
+
+
+def _clean_html(value):
+    text = html.unescape(re.sub(r"<[^>]+>", " ", value or ""))
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def fetch_news(query, limit=2):
+    """Fetch a small, best-effort Google News RSS snapshot for one sector.
+
+    News is supplementary context: a feed outage must never prevent the price
+    dashboard from updating. The source URL and publication timestamp are kept
+    in the payload so the UI can label the evidence clearly.
+    """
+    if not query:
+        return []
+    url = ("https://news.google.com/rss/search?q=" + quote_plus(query) +
+           "&hl=en-IN&gl=IN&ceid=IN:en")
+    try:
+        req = Request(url, headers={"User-Agent": "Mozilla/5.0 RRG daily research brief"})
+        with urlopen(req, timeout=10) as response:
+            root = ET.fromstring(response.read())
+        out = []
+        for item in root.findall("./channel/item")[:limit]:
+            title = _clean_html(item.findtext("title", ""))
+            link = item.findtext("link", "")
+            description = _clean_html(item.findtext("description", ""))
+            source_node = item.find("source")
+            source = _clean_html(source_node.text if source_node is not None else "")
+            pub = item.findtext("pubDate", "")
+            if title and link:
+                out.append({"title": title, "link": link, "summary": description[:300],
+                            "source": source or "Google News", "published": pub})
+        return out
+    except Exception as exc:
+        print(f"  news unavailable for {query!r}: {exc}")
+        return []
+
+
+def build_research_brief():
+    """Return current sector news plus a structural SWOT frame."""
+    brief = {}
+    for name, meta in INDICES.items():
+        if meta.get("kind") != "sector":
+            continue
+        brief[name] = {
+            "swot": SWOT.get(name, {
+                "strengths": ["Established sector demand", "Diversified listed exposure"],
+                "weaknesses": ["Performance varies across constituents", "Sensitive to the economic cycle"],
+                "opportunities": ["Domestic growth and formalisation", "Productivity and market-share gains"],
+                "threats": ["Macro, policy and competitive risk", "Valuation or liquidity shocks"],
+            }),
+            "news": fetch_news(NEWS_QUERIES.get(name, f"India {name} sector")),
+            "query": NEWS_QUERIES.get(name, f"India {name} sector"),
+        }
+    return brief
 
 
 # ---------------------------------------------------------------- indicators
@@ -105,6 +278,8 @@ def fetch_prices(period):
         sys.exit("benchmark not fetched")
     close[BENCH] = close[BENCH].ffill()
     got = sum(1 for s in syms if s in close.columns)
+    if got < max(MIN_MEMBERS, int(len(syms) * 0.60)):
+        sys.exit(f"only fetched {got}/{len(syms)} constituents; refusing to overwrite the previous dashboard")
     print(f"  got {got}/{len(syms)} constituents, {len(close)} sessions, "
           f"last {close.index[-1].date()}")
     return close
@@ -216,6 +391,9 @@ def run():
     print(f"scored {len(stocks)} stocks "
           f"({sum(1 for v in stocks.values() if v['good'])} in uptrend)")
 
+    print("Fetching sector news snapshots …")
+    research = build_research_brief()
+
     groups = list(dict.fromkeys(v["group"] for v in INDICES.values()))
     snapshot = {
         "as_of": as_of,
@@ -223,6 +401,9 @@ def run():
         "benchmark": BENCH, "benchmark_name": BENCH_NAME,
         "params": {"window": window, "mom": mom, "smooth": smooth},
         "groups": groups, "stocks": stocks, "freqs": freqs,
+        "research": research,
+        "research_generated": dt.datetime.utcnow().replace(microsecond=0).isoformat() + "Z",
+        "data_source": "Yahoo Finance daily adjusted close; Google News RSS for headlines",
     }
     os.makedirs(DOCS, exist_ok=True)
     json.dump(snapshot, open(os.path.join(DOCS, "rrg.json"), "w"), separators=(",", ":"))

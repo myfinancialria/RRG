@@ -55,8 +55,7 @@ header .lede{color:var(--mut);font-size:13.5px;margin-top:5px;max-width:820px}
 .sbitem .tag-sub{margin-left:auto}
 
 .chartbox{position:relative;height:520px;padding:8px}
-.quads{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
-@media(max-width:840px){.quads{grid-template-columns:1fr 1fr}}
+.quads{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
 @media(max-width:520px){.quads{grid-template-columns:1fr}}
 .qcard{overflow:hidden}
 .qhead{padding:9px 12px;font-weight:700;font-size:13.5px;display:flex;align-items:center;gap:8px}
@@ -71,6 +70,38 @@ header .lede{color:var(--mut);font-size:13.5px;margin-top:5px;max-width:820px}
 .q5{font-size:10.5px;font-weight:600}
 .q5.up{color:var(--lead)}.q5.dn{color:var(--lag)}
 .qempty{color:var(--mut);font-size:12px;padding:8px 10px}
+
+.brief{margin-top:18px}
+.brief-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brief-head h3{margin:0;font-size:17px}
+.brief-head p{margin:3px 0 0;color:var(--mut);font-size:12.8px}
+.brief-note{color:var(--mut);font-size:11.5px;text-align:right}
+.brief-columns{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+@media(max-width:940px){.brief-columns{grid-template-columns:1fr}}
+.brief-column{min-width:0}
+.brief-column>h4{margin:0 0 8px;padding:10px 12px;border-radius:10px;font-size:13.5px;display:flex;align-items:center;gap:7px}
+.brief-column.strong>h4{background:var(--lead-bg);color:var(--lead)}
+.brief-column.weak>h4{background:var(--lag-bg);color:var(--lag)}
+.insight-card{padding:14px;margin-bottom:10px}
+.insight-top{display:flex;align-items:flex-start;gap:9px}
+.insight-title{font-size:14px;font-weight:700;line-height:1.25}
+.insight-meta{color:var(--mut);font-size:11.5px;margin-top:2px}
+.score{margin-left:auto;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700;white-space:nowrap}
+.score.positive{background:var(--lead-bg);color:var(--lead)}
+.score.negative{background:var(--lag-bg);color:var(--lag)}
+.insight-summary{color:#374151;font-size:12.8px;margin:10px 0 0;line-height:1.45}
+.insight-details{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:12px;margin-top:11px}
+@media(max-width:620px){.insight-details{grid-template-columns:1fr}}
+.mini-title{font-size:10.5px;text-transform:uppercase;letter-spacing:.55px;font-weight:800;color:var(--mut);margin-bottom:5px}
+.news-list{margin:0;padding:0;list-style:none}
+.news-list li{border-top:1px solid var(--line);padding:6px 0 0;margin-top:6px}
+.news-list a{font-size:12.1px;font-weight:600;line-height:1.3;display:block}
+.news-list small{font-size:10.5px;color:var(--mut)}
+.swot{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.swot-box{border-radius:7px;padding:6px 7px;background:var(--soft);font-size:10.8px;color:#4b5563}
+.swot-box b{display:block;font-size:10px;margin-bottom:2px}
+.swot-box ul{padding:0 0 0 13px;margin:0}.swot-box li{margin:1px 0}
+.swot-box.s b{color:var(--lead)}.swot-box.w b{color:var(--lag)}.swot-box.o b{color:var(--imp)}.swot-box.t b{color:var(--weak)}
 
 .stockpanel{padding:14px 16px;margin-top:14px}
 .sp-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:15px;margin-bottom:10px}
@@ -157,6 +188,18 @@ details p{margin:0 0 12px;color:var(--mut);font-size:13.2px}
     <div id="below"></div>
   </main>
 </div>
+
+<section class="section brief" id="researchBrief">
+  <div class="brief-head">
+    <div><h3>Daily sector rotation brief</h3>
+      <p>Top five broad sectors with the strongest and weakest current rotation. Ranking uses a transparent composite of Trend and Momentum; click the chart or quadrant cards for the full basket.</p></div>
+    <div class="brief-note" id="briefFreshness">Research feed loading…</div>
+  </div>
+  <div class="brief-columns">
+    <div class="brief-column strong"><h4>↗ Strongest: Leading + Improving</h4><div id="strongBrief"></div></div>
+    <div class="brief-column weak"><h4>↘ Weakest: Weakening + Lagging</h4><div id="weakBrief"></div></div>
+  </div>
+</section>
 
 <div class="section">
   <h3>How to read the chart</h3>
@@ -316,6 +359,7 @@ function render(){
   computeBounds(list);chart.data.datasets=ds;chart.update('none');
 
   renderBelow();
+  renderResearch();
   updateSidebar();
   narrate();
   document.getElementById('scrubDate').textContent=F().dates[state.head]||'—';
@@ -328,6 +372,35 @@ function rowsFor(sectors){const rows=[];sectors.forEach(s=>{const p=headAt(s.ser
 function move5d(name){const ds=DATA.freqs.daily.sectors.find(s=>s.name===name);if(!ds)return null;
   const pts=ds.series.filter(Boolean);if(pts.length<6)return null;
   return +(pts[pts.length-1][0]-pts[pts.length-6][0]).toFixed(2);}
+
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function newsDate(v){if(!v)return '';const d=new Date(v);return Number.isNaN(d.getTime())?esc(v):d.toLocaleDateString(undefined,{day:'numeric',month:'short'});}
+function briefRows(){
+  const last=F().dates.length-1;
+  return F().sectors.filter(s=>s.kind==='sector').map(s=>{
+    const p=headAt(s.series,last);if(!p)return null;
+    const q=quad(p[0],p[1]);
+    return {name:s.name,q:q,x:p[0],y:p[1],score:(p[0]-100)*.6+(p[1]-100)*.4};
+  }).filter(Boolean);
+}
+function swotBox(label,items,klass){return `<div class="swot-box ${klass}"><b>${label}</b><ul>${(items||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;}
+function insightCard(r){
+  const info=(DATA.research||{})[r.name]||{};const news=info.news||[];const sw=info.swot||{};
+  const stories=news.length?news.map(n=>`<li><a href="${esc(n.link)}" target="_blank" rel="noopener">${esc(n.title)}</a><small>${esc(n.source||'Source')} · ${newsDate(n.published)}</small>${n.summary?`<div style="color:var(--mut);font-size:10.8px;margin-top:2px">${esc(n.summary)}</div>`:''}</li>`).join(''):'<li><small>No sector-specific headline was returned by the news feed today. The RRG data is still current.</small></li>';
+  const direction=r.score>=0?'positive':'negative';
+  return `<article class="card insight-card"><div class="insight-top"><span class="cdot" style="background:${QC[r.q]};margin-top:4px"></span><div><div class="insight-title">${esc(r.name)}</div><div class="insight-meta"><span style="color:${QC[r.q]};font-weight:700">${r.q}</span> · Trend ${r.x.toFixed(1)} · Momentum ${r.y.toFixed(1)}</div></div><span class="score ${direction}">${r.score>=0?'+':''}${r.score.toFixed(1)} score</span></div>
+    <div class="insight-details"><div><div class="mini-title">Sector news · latest feed snapshot</div><ul class="news-list">${stories}</ul></div>
+      <div><div class="mini-title">SWOT frame · structural context</div><div class="swot">${swotBox('Strengths',sw.strengths,'s')}${swotBox('Weaknesses',sw.weaknesses,'w')}${swotBox('Opportunities',sw.opportunities,'o')}${swotBox('Threats',sw.threats,'t')}</div></div></div></article>`;
+}
+function renderResearch(){
+  const rows=briefRows();
+  const strong=rows.filter(r=>r.q==='Leading'||r.q==='Improving').sort((a,b)=>b.score-a.score).slice(0,5);
+  const weak=rows.filter(r=>r.q==='Weakening'||r.q==='Lagging').sort((a,b)=>a.score-b.score).slice(0,5);
+  document.getElementById('strongBrief').innerHTML=strong.length?strong.map(insightCard).join(''):'<div class="card insight-card"><span class="qempty">No Leading or Improving broad sector is available for this date.</span></div>';
+  document.getElementById('weakBrief').innerHTML=weak.length?weak.map(insightCard).join(''):'<div class="card insight-card"><span class="qempty">No Weakening or Lagging broad sector is available for this date.</span></div>';
+  const stamp=DATA.research_generated?new Date(DATA.research_generated).toLocaleString(undefined,{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'not available';
+  document.getElementById('briefFreshness').textContent=`News snapshot generated ${stamp} · data date ${DATA.as_of}`;
+}
 
 function renderBelow(){
   const below=document.getElementById('below');
@@ -353,8 +426,8 @@ function renderBelow(){
     return;
   }
   const rows=rowsFor(visibleSectors());
-  const Q=[['Leading',QC.Leading,QBG.Leading],['Weakening',QC.Weakening,QBG.Weakening],
-           ['Lagging',QC.Lagging,QBG.Lagging],['Improving',QC.Improving,QBG.Improving]];
+  const Q=[['Improving',QC.Improving,QBG.Improving],['Leading',QC.Leading,QBG.Leading],
+           ['Lagging',QC.Lagging,QBG.Lagging],['Weakening',QC.Weakening,QBG.Weakening]];
   below.innerHTML='<div class="hd" style="margin:14px 0 0">Each industry shows its <b>Trend</b> value '+
     '(right of 100 = stronger than Nifty) and its <b>▲▼ 5-day move</b>. Click one to see its stocks.</div>'+
     '<div class="quads">'+Q.map(([q,col,bg])=>{
